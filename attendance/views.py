@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from .models import Hostel, Mess, Student, HostelStudent, Attendance, HostelRC
-from .serializers import HostelSerializer, MessSerializer, StudentSerializer, HostelStudentSerializer, AttendanceSerializer
+from .models import Hostel, Mess, Student, HostelStudent, Attendance, HostelRC, Year
+from .serializers import HostelSerializer, MessSerializer, StudentSerializer, HostelStudentSerializer, AttendanceSerializer, YearSerializer
 from rest_framework.views import APIView
 import datetime
 from rest_framework import permissions
@@ -38,9 +38,7 @@ class HostelView(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Hostel.objects.all()
-        organization = self.request.query_params.get('organization', None)
-        if organization is not None:
-            queryset = queryset.filter(organization_id=organization)
+        
         return queryset
     def perform_create(self, serializer):
     	serializer.save(created_by=self.request.user,modified_by=self.request.user,created_at=datetime.datetime.now(pytz.timezone(settings.TIME_ZONE)),modified_at=datetime.datetime.now(pytz.timezone(settings.TIME_ZONE)))
@@ -55,9 +53,7 @@ class MessView(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Mess.objects.all()
-        organization = self.request.query_params.get('organization', None)
-        if organization is not None:
-            queryset = queryset.filter(organization_id=organization)
+        
         return queryset
     def perform_create(self, serializer):
     	serializer.save(created_by=self.request.user,modified_by=self.request.user,created_at=datetime.datetime.now(pytz.timezone(settings.TIME_ZONE)),modified_at=datetime.datetime.now(pytz.timezone(settings.TIME_ZONE)))
@@ -72,9 +68,7 @@ class StudentView(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Student.objects.all()
-        organization = self.request.query_params.get('organization', None)
-        if organization is not None:
-            queryset = queryset.filter(organization_id=organization)
+        
         return queryset
     def perform_create(self, serializer):
     	serializer.save(created_by=self.request.user,modified_by=self.request.user,created_at=datetime.datetime.now(pytz.timezone(settings.TIME_ZONE)),modified_at=datetime.datetime.now(pytz.timezone(settings.TIME_ZONE)))
@@ -89,11 +83,20 @@ class HostelStudentView(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = HostelStudent.objects.all()
-        hostel_rc = HostelRC.objects.filter(rc_id=self.request.user.id,year_id=3).last()
+        
         search = self.request.query_params.get('search', None)
         purpose = self.request.query_params.get('purpose', None)
-        if hostel_rc:
-        	queryset = queryset.filter(hostel_id = hostel_rc.hostel)
+        current_year = self.request.query_params.get('current_year', None)
+        if current_year:
+            print("CURRR...")
+            print(current_year)
+            hostel_rc = HostelRC.objects.filter(rc_id=self.request.user.id,year_id=current_year).last()
+            if hostel_rc:
+            	queryset = queryset.filter(hostel_id = hostel_rc.hostel)
+            else:
+                queryset = []
+        else:
+            queryset = []
         # organization = self.request.query_params.get('organization', None)
         # if organization is not None:
         #     queryset = queryset.filter(organization_id=organization)
@@ -150,3 +153,56 @@ class SaveAttendance(APIView):
             attendance_obj.save()
         datas = {"message": "success"}
         return Response(datas)
+
+class YearView(viewsets.ModelViewSet):
+
+    queryset = Year.objects.all()
+    serializer_class = YearSerializer
+    pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+        queryset = Year.objects.all()
+        get_current_year = self.request.query_params.get('get_current_year', None)
+        if get_current_year is not None:
+            queryset = queryset.filter(is_active=True)
+        return queryset
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user,modified_by=self.request.user,created_at=datetime.datetime.now(pytz.timezone(settings.TIME_ZONE)),modified_at=datetime.datetime.now(pytz.timezone(settings.TIME_ZONE)))
+    def perform_update(self, serializer):
+        serializer.save(modified_at=datetime.datetime.now(pytz.timezone(settings.TIME_ZONE)),modified_by=self.request.user)
+class CheckCurrentYear(APIView):
+    def get(self, request):
+        data = request.GET
+        year_id = data.get('year_id')
+        check_year = Year.objects.filter(current_year=True).last()
+        if check_year:
+            if year_id:
+                if str(check_year.id) == str(year_id):
+                    datas = {"already_exit": False}
+                else:
+                    datas = {"already_exit": True}
+            else:
+                datas = {"already_exit": True}
+        else:
+            datas = {"already_exit": False}
+        return Response(datas)
+class CheckYear(APIView):
+    def get(self, request):
+        data = request.GET
+        year = data.get('year')
+        message = ""
+        if year:
+            hostel_rc = HostelRC.objects.filter(Q(year_id=year))
+            if hostel_rc:
+                message = "Hostel RC"
+            hostel_student = HostelStudent.objects.filter(Q(year_id=year))
+            if hostel_student:
+                if message:
+                    message = message + ", Hostel Student"
+                else:
+                    message = "Hostel Student"
+        is_dependent = False
+        if message:
+            is_dependent = True
+        response_data = {"is_dependent": is_dependent, "message": message}
+        return JsonResponse(response_data)

@@ -14,6 +14,7 @@ class CommonFieldsModel(models.Model):
 class Year(CommonFieldsModel):
 	from_year = models.IntegerField(unique=True)
 	to_year = models.IntegerField(unique=True)
+	current_year = models.BooleanField(default=False)
 	def __str__(self):
 		return "{from_year} - {to_year}".format(from_year=str(self.from_year),to_year=str(self.to_year))
 class Hostel(CommonFieldsModel):
