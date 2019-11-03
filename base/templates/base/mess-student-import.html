@@ -1,0 +1,60 @@
+{% extends "_layouts/base.html" %}
+{% block page_title %}Hostel {% endblock %}
+{% block page_class %}home-page{% endblock %}
+{% block content %}
+<div id="main" role="main">
+   <div id="content">
+      <!-- widget grid -->
+      <section id="widget-grid" class="">
+         <!-- NEW WIDGET START -->
+         <article class="col-sm-12">
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+               <header>
+                  <h2>Import Mess Student</h2>    
+               </header>
+               <!-- widget div-->
+               <div role="content">
+                  <!-- widget content -->
+                  <div class="widget-body">
+                    <div class="row" style="margin-bottom: 25px;">
+                      <div class="col-md-9">
+                        <p><b>Import data Rules</b></p>
+                        <p>1. Enter the sheet name.
+                      </div> 
+                    </div>
+                    
+                    <form method="post" action="" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="form-group">
+                          <label for="usr">Sheet name:</label>
+                          <input type="text" name="sheet_name" class="form-control" style="width: 50%;">
+                        </div>
+                     
+                        <input type="file" name="import_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+                        
+
+
+                        <div class="form-group align text-center">
+                      <button class="btn  " id="add_new" name="action" value="Addnew">Upload file</button>
+                      <button class="btn  " type="reset" data-dismiss="modal" >cancel</button>
+                    </div>
+
+                    </form>
+					 <div class="table-responsive ">
+					 						 
+					</div>
+                  </div>
+                  <!-- end widget content -->
+               </div>
+               <!-- end widget div -->
+            </div>
+            <!-- end widget -->
+         </article>
+         <!-- WIDGET END -->
+      </section>
+      <!-- end widget grid -->
+   </div>
+   <!-- END #MAIN CONTENT -->
+</div>
+{% endblock %}

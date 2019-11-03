@@ -1,0 +1,190 @@
+{% extends "_layouts/base.html" %}
+{% load addClass %}
+{% block page_title %}Hostel{% endblock %}
+{% block page_class %}home-page{% endblock %}
+{% block content %}
+<style type="text/css">
+    /*.table-scroll {
+    position:relative;
+    margin:auto;
+    overflow:hidden;
+    border:1px solid #000;
+    }
+    .table-wrap {
+    width:100%;
+    overflow:auto;
+    }
+    .table-scroll table {
+    width:100%;
+    margin:auto;
+    border-collapse:separate;
+    border-spacing:0;
+    }
+    .table-scroll th, .table-scroll td {
+    padding:5px 10px;
+    border:1px solid #000;
+    background:#fff;
+    white-space:nowrap;
+    vertical-align:top;
+    }
+    .table-scroll thead, .table-scroll tfoot {
+    background:#f9f9f9;
+    }
+    .clone {
+    position:absolute;
+    top:0;
+    left:0;
+    pointer-events:none;
+    }
+    .clone th, .clone td {
+    visibility:hidden
+    }
+    .clone td, .clone th {
+    border-color:transparent
+    }
+    .clone tbody th {
+    visibility:visible;
+    color:red;
+    }
+    .clone .fixed-side {
+    border:1px solid #000;
+    background:#eee;
+    visibility:visible;
+    }
+    .clone thead, .clone tfoot{background:transparent;}*/
+</style>
+<div id="main" role="main">
+    <div id="content">
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+            <!-- NEW WIDGET START -->
+            <article class="col-sm-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <!-- <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <h2>Device / Employee Id Mapping</h2>
+                    </header>
+                   
+                    <div role="content">
+                    
+                        <div class="widget-body">
+                            <div style="padding-bottom: 10px" class="row"></div>
+                            <div class="col-md-12 table-responsive ">
+                                <div id="table-scroll" class="table-scroll">
+                                    <div class="table-wrap">
+                                        <form method="GET" class="form-inline">
+                                            <div style="padding-right: 1px">
+                                                <select name="location_id" class="form-control">
+                                                    <option value="">Select location</option>
+                                                    {% for lo in locations %}
+                                                    <option value="{{ lo.id }}" {% if location_id == lo.id %} selected {% endif %}>{{ lo.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <div class="input-group">
+                                                    <input type="text" name="start_date" class="form-control datetimepicker" value="{{ start_date }}" placeholder="Start Date">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                                <div class="input-group">
+                                                    <input type="text" name="end_date" class="form-control datetimepicker_end_date" value="{{ end_date }}" placeholder="End Date">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                                <button type="submit">Submit</button> 
+                                            </div>
+                                        </form>
+                                        <form method="POST" action="">
+                                            <input type="hidden" name="location_id" value="{{location_id}}">
+                                            {% csrf_token%}
+                                            <table class="table table-bordered main-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="fixed-side">Employee ID</th>
+                                                        {% for device in device_list %}
+                                                        <th class="verticalTableHeader"><input type="checkbox" class="select-all" data-device_name="{{device.device_id}}">{{device.device_name}}
+                                                            <input type="hidden" name="device_id" value="{{ device.device_id}}">
+                                                            <input type="hidden" name="device_name" value="{{ device.device_name}}">
+                                                        </th>
+                                                        {% endfor %}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for user in user_list %}
+                                                    <tr >
+                                                        <td class="fixed-side">{{user.employee_id}}<input type="hidden" name="user_id" value="{{ user.employee_id}}"></td>
+                                                        {% for device in device_list %}
+                                                        <td  style="text-align:left;" class="text-center">
+                                                            {% addstr location_id  device.device_id user.employee_id as results %}
+                                                            <input type="checkbox" name="{{user.employee_id}}_{{device.device_id}}" class="{{device.device_id}} updatestatus" {% if results in total_device_mapping %} checked {% endif %}>
+                                                            <input type="hidden" name="val_{{user.employee_id}}_{{device.device_id}}" class="updatestatus_{{device.device_id}}" value="{% if results in total_device_mapping %} 1 {% endif %}">
+                                                        </td>
+                                                        {% endfor %}
+                                                    </tr>
+                                                    {% empty %}
+                                                    <tr >
+                                                        <td colspan="1">No record found</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <button type="submit">Save</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </article>
+        </section>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %} 
+<script type="text/javascript">
+    $(document).ready(function() {
+      {% if start_date %}
+      $(".datetimepicker_end_date" ).datetimepicker({
+                       locale:'en',
+                       timepicker:false,
+                       format:'d/m/Y',
+                       formatDate:'d/m/Y',
+                       minDate: '{{start_date}}'
+                   });
+      {% endif %}
+    $('.datetimepicker').change(function() {
+    var start_date = $(this).val();
+      $(".datetimepicker_end_date" ).datetimepicker({
+                       locale:'en',
+                       timepicker:false,
+                       format:'d/m/Y',
+                       formatDate:'d/m/Y',
+                       minDate: start_date
+                   });
+    });
+       //set initial state.
+       $('.select-all').change(function() {
+        var class_name = $(this).data("device_name");
+           if(this.checked) {
+            $("."+class_name).prop('checked', true);
+            $(".updatestatus_"+class_name).val('1');
+           }else{
+            $("."+class_name).prop('checked', false);
+            $(".updatestatus_"+class_name).val('');
+           }
+           // $('#textbox1').val(this.checked);        
+       });
+       $('.updatestatus').change(function(){
+        if(this.checked) {
+          $(this).next().val('1')
+            // $("."+class_name).prop('checked', true);
+           }else{
+            $(this).next().val('')
+            // $("."+class_name).prop('checked', false);
+           }
+       })
+    });
+    
+    // jQuery(document).ready(function() {
+    //   jQuery(".main-table").clone(true).appendTo('#table-scroll').addClass('clone');   
+    // });
+</script>
+{% endblock %}
