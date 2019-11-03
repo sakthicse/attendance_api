@@ -27,7 +27,7 @@ SECRET_KEY = '4oze9t3@fa+w)89)m#1)&omz@9kfj%78zrkw8g(@2rb)a3req9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.2','localhost','192.168.1.4']
+ALLOWED_HOSTS = ['192.168.1.2','localhost','192.168.1.4','192.168.43.112']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'compressor',
 
     'rest_framework',
 
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'base',
     'corsheaders',
     'attendance',
 
@@ -69,10 +71,18 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 ROOT_URLCONF = 'hostel_system_api.urls'
 
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'base', 'static')
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_LOGOUT_ON_GET = True
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'base', 'templates'), os.path.join(BASE_DIR,'base', 'templates', 'allauth')],
+        'APP_DIRS': True,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,6 +91,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+        'libraries':{
+                'addClass': 'hostel_system_api.templatetags.addClass',
+
+            }
         },
     },
 ]
@@ -95,7 +109,7 @@ WSGI_APPLICATION = 'hostel_system_api.wsgi.application'
 # DJANGO_MYSQL_DB_NAME = os.environ.get('DJANGO_MYSQL_DB_NAME', 'hostel')
 # DJANGO_MYSQL_DB_USER = os.environ.get('DJANGO_MYSQL_DB_USER', 'root')
 # DJANGO_MYSQL_DB_PASSWORD = os.environ.get('DJANGO_MYSQL_DB_PASSWORD', '')
-DJANGO_MYSQL_DB_NAME = 'hostel'
+DJANGO_MYSQL_DB_NAME = 'hostel2'
 DJANGO_MYSQL_DB_USER = 'root'
 DJANGO_MYSQL_DB_PASSWORD = 'Root@123'
 DATABASES = {
@@ -204,12 +218,12 @@ JWT_AUTH = {
     'JWT_VERIFY': True,
     'JWT_VERIFY_EXPIRATION': True,
     'JWT_LEEWAY': 0,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=2),
     'JWT_AUDIENCE': None,
     'JWT_ISSUER': None,
 
     'JWT_ALLOW_REFRESH': False,
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=2),
 
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
     'JWT_AUTH_COOKIE': None,

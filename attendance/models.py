@@ -32,6 +32,8 @@ class HostelRC(CommonFieldsModel):
 	class Meta:
 		unique_together=('hostel','rc','year')
 class Mess(CommonFieldsModel):
+	FOOD_TYPES = (("veg","Veg"),("non_veg","Non Veg"))
+	food_type = models.CharField(max_length=12,choices=FOOD_TYPES)
 	name = models.CharField(max_length=255,unique=True)
 	def __str__(self):
 		return self.name
@@ -40,24 +42,54 @@ class Student(CommonFieldsModel):
 	GENDER = (("male","Male"),("female","Female"))
 	FOOD_TYPES = (("veg","Veg"),("non_veg","Non Veg"))
 	GRADUATE = (("ug","UG"),("pg","PG"))
-	BRANCHS = (('cse','CSE'),('ece','ECE'))
+	BRANCHS = (('cse','Computer Science and Engineering'),('ece','Electronics and Communication Engineering'),('eee','Electrical and Electronics Engineering'),('it','Information Technology'),('me','Mining Engineering'))
 	student_name = models.CharField(max_length=500)
-	register_number = models.IntegerField()
+	roll_number = models.CharField(max_length=50,unique=True)
+	email = models.EmailField(max_length=250)
+	phone_number = models.CharField(max_length=20)
 	gender = models.CharField(max_length=15,choices=GENDER)
-	graduate = models.CharField(max_length=15,choices=GRADUATE)
-	year = models.CharField(max_length=15)
+	dob = models.DateField()
+	
+	college = models.CharField(max_length=200)
+	degree = models.CharField(max_length=20)
+
+	# graduate = models.CharField(max_length=15,choices=GRADUATE)
+	
 	branch = models.CharField(max_length=15,choices=BRANCHS)
-	food_type = models.CharField(max_length=12,choices=FOOD_TYPES)
-	contact_number = models.CharField(max_length=15)
-	address = models.TextField(max_length=500)
+
+	address = models.TextField(max_length=1000)
+	fathers_name = models.CharField(max_length=100)
+	fathers_phone_no = models.CharField(max_length=20)
+
+	mothers_name = models.CharField(max_length=100)
+	mothers_phone_no = models.CharField(max_length=20,null=True,blank=True)
+
+	# food_type = models.CharField(max_length=12,choices=FOOD_TYPES)
+	# contact_number = models.CharField(max_length=15)
 
 	def __str__(self):
 		return "{name}".format(name=self.student_name)
+
+class HostelMessStudent(CommonFieldsModel):
+	mess = models.ForeignKey(Mess,on_delete=models.CASCADE)
+	hostel = models.ForeignKey(Hostel,on_delete=models.CASCADE)
+	student = models.ForeignKey(Student,on_delete=models.CASCADE)
+	year = models.ForeignKey(Year,on_delete=models.CASCADE)
+
+	class Meta:
+		unique_together = ('hostel','mess','year')
+
+
 
 class HostelStudent(CommonFieldsModel):
 	year = models.ForeignKey(Year,on_delete=models.CASCADE)
 	hostel = models.ForeignKey(Hostel,on_delete=models.CASCADE)
 	student = models.ForeignKey(Student,on_delete=models.CASCADE)
+
+	student_year = models.CharField(max_length=15)
+	student_semester = models.IntegerField(max_length=15)
+	# hostel_block = models.CharField()
+	room_number = models.CharField(max_length=15)
 	def __str__(self):
 		return "{hostel}  - {from_year} - {to_year} - {student}".format(hostel=self.hostel.name,from_year=str(self.year.from_year), to_year=str(self.year.to_year),student=self.student.student_name)
 

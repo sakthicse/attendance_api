@@ -8,3 +8,5 @@ django-auditlog
 django_compressor
 xlwt
 mysql-connector-python
+django_compressor
+openpyxl==2.5.5
