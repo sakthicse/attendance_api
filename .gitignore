@@ -9,3 +9,4 @@ venv
 cache
 #migrations
 envname
+attendance/migrations/
