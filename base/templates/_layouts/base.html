@@ -1,0 +1,152 @@
+{% load compress %}
+{% load staticfiles %}
+<link rel="shortcut icon" href="{%  static 'favico.gif' %}">
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+
+  <!-- Use the .htaccess and remove these lines to avoid edge case issues.
+       More info: h5bp.com/i/378 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>{% block page_title %}{{ _("Hostel") }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{% endblock %}">
+  <meta name="author" content="{% block meta_author %}{% endblock %}">
+
+  <!-- Mobile viewport optimized: h5bp.com/viewport -->
+  <meta name="viewport" content="width=device-width">
+
+  {% block meta %}
+  {% endblock %}
+
+  {# use the CDN to get bootstrap css. can not be inside compress css block #}
+  {% block cdn_css %}
+
+ <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'css/font-awesome.css'  %}">
+  <link rel="stylesheet" href="{% static 'css/pluginTheme.css' %}">
+  <link rel="stylesheet" href="{% static 'css/demoTheme.css' %}">
+  <link rel="stylesheet" href="{% static 'css/skinTheme.css' %}">
+  <link rel="stylesheet" href="{% static 'css/customApp.css' %}">
+  <link rel="stylesheet" href="{% static 'js/jquery.datetimepicker.css' %}">
+  <link rel="stylesheet" href="{% static 'css/jquery.dataTables.css' %}">
+  <link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}">
+  <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+   <link rel="stylesheet" href="{% static 'css/pace-theme-center-simple.min.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/css.css' %}">
+  {% endblock cdn_css %}
+
+  {% compress css %}
+  {% block css %}{% endblock %}
+  {% endcompress %}
+  <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
+
+  <!-- All JavaScript at the bottom, except this Modernizr build.
+       Modernizr enables HTML5 elements & feature detects for optimal performance.
+       Create your own custom Modernizr build: www.modernizr.com/download/ -->
+  {% compress js %}
+ 
+
+  {% endcompress %}
+</head>
+<body class="fixed-header fixed-navigation smart-style-2 desktop-detected {% block body_class %}{% endblock %}" {% block body_attributes %}{% endblock %}>
+{% block body %}
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7]>
+    <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+  <![endif]-->
+   {% include "_layouts/_header.html" %}
+   {% include "_layouts/_messages.html" %}
+
+    {% block content %}{% endblock %}
+
+  <div>
+
+   
+  </div>
+
+  <!-- <footer>
+    {% block footer %}
+    <div class="container">
+      <hr>
+      <p>&copy; Hostel 2018</p>
+    </div>
+    {% endblock footer %}
+  </footer> -->
+
+
+  <!-- JavaScript at the bottom for fast page loading -->
+
+  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+  {% block cdn_js %}
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/d3-v4.min.js' %}"></script>
+  <script src="{% static 'js/jquery.validate.js' %}"></script>
+  <script src="{% static 'js/jquery-ui.js' %}"></script>
+    <script src="{% static 'js/appConfig.js' %}"></script>
+ <script src="{% static 'js/pace.min.js' %}"></script>
+    <!-- BOOTSTRAP JS -->
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    
+    <script src="{% static 'js/jquery.datetimepicker.full.js' %}"></script>
+    <!-- MAIN APP JS FILE -->
+    <script src="{% static 'js/appinit.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+     <script type='text/javascript' src="{% static 'js/jquery.timepicker.js' %}"></script>
+    <script src="{% static 'js/jquery.dataTables.js' %}"></script>
+  
+  {% endblock cdn_js %}
+
+  <!-- scripts concatenated and minified via django-compressor -->
+  {% compress js %}
+  {% block js %}
+
+
+
+  {% endblock js %}
+  {% endcompress %}
+   {% block javascript %}
+        {% endblock javascript %}
+  <!-- end scripts -->
+
+  <!-- Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
+       mathiasbynens.be/notes/async-analytics-snippet -->
+  <script type="text/javascript">
+    var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+    $( ".datetimepicker" ).datetimepicker({
+                    locale:'en',
+                    timepicker:false,
+                    format:'d/m/Y',
+                    formatDate:'d/m/Y',
+                  // minDate: dateToday
+                });
+    window.onbeforeunload = renderLoading;
+function renderLoading() {
+  Pace.options = {
+  ajax: {
+    ignoreURLs: [/shift-report-download/,/report2_download/,/report3_download/,/report4_download/,/report5_download/,/report6_download/,/report7_download/]
+  }
+}
+// Pace.stop();
+//Pace.start();
+// Pace.bar.render();
+
+}
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+$("form").attr('autocomplete', 'off');
+  </script>
+{% endblock %}
+</body>
+</html>

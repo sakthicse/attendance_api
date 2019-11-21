@@ -1,0 +1,8 @@
+{% if messages %}
+{% for message in messages %}
+<div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissable" {% endif %} {% if  forloop.counter == 1 %} style="margin-top: 50px;margin-left: 220px;" {% else %}  style="margin-top: 10px;margin-left: 220px;" {% endif %}> 
+	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  	 {{ message|safe }}
+</div>
+ {% endfor %}
+{% endif %}

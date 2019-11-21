@@ -1,0 +1,31 @@
+{% load i18n %}
+{% load compress %}
+{% load staticfiles %}
+{% block content %}
+
+<div class="widget-body">   
+                     <form>
+                        <fieldset>
+                                <div class="col-md-12">
+                                    <div class="col-md-12 base-history">
+                                        <div class="table-responsive table-responsive-noscroll qq">
+                                            <table class="table table-bordered table-bordered_popup bom-print">
+                                                <thead>
+                                                <tr>
+                                                    <th>Created by</th>
+                                                    <th>Created at</th>
+                                                    <th>Completed by</th>
+                                                    <th>Completed at</th>
+                                                    <th>Reason for obsoletion</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="history-wrapper">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+</fieldset>
+</form>
+</div>
+{% endblock %}

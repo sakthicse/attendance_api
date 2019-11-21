@@ -1,0 +1,252 @@
+{% load i18n %}
+{% load compress %}
+{% load staticfiles %}
+<!-- #HEADER -->
+<header id="header">
+    <div id="logo-group">
+        <!-- PLACE YOUR LOGO HERE -->
+        <span id="logo"><a href="/dashboard/"> <img src="/static/image/logo.png" class="logoImage" alt="logo-dummy"> </a></span>            <!-- end collapse menu -->
+    </div>
+    <!-- pulled right: nav area -->
+    <div class="pull-right">
+        <!-- logout button -->
+        <div id="logout" class="btn-header transparent pull-right">
+            <span> 
+            <a href="{% url 'account_logout' %}" id="sign_out" title="Sign Out">
+            <i class="fa fa-sign-out">  
+            </i>
+            </a> 
+            </span>
+        </div>
+        <!-- end search mobile button -->
+        <!-- input: search field -->
+        <!--  <div class="header-search pull-right">
+            <i class="glyphicon glyphicon-cog "></i>
+            </div> -->
+        <!-- 
+            <form class="header-search pull-right">
+               <button type="button" data-toggle="modal" data-target="#myModal">
+               <i class="fa fa-search"></i>
+               </button>
+            </form> -->
+        <!-- end input: search field -->
+        <!-- end lang dropdown -->
+    </div>
+    <!-- end pulled right: nav area -->
+</header>
+<header id="header-print">
+    <div id="logo-group"></div>
+    <span id="logo-print"> <img src="/static/image/logo.png" class="logoImage" align="middle" alt="logo-dummy"> </span> 
+    </div>
+</header>
+<!-- END HEADER -->
+<!-- #NAVIGATION -->
+<aside id="left-panel">
+    <nav>
+        <ul style="">
+            {% if request.user.is_superuser or request.user.role == 'admin' or request.user.role == 'supervisor'  or request.user.role == 'hr' %}
+            <li  {% if request.path == "/dashboard/"  or "/dashboard/" in request.path %} class="active" {% endif %}><a href="{% url 'dashboard' %}" title="Dashboard"><span class="menu-item-parent">Dashboard</span></a></li>
+            {% if request.user.is_superuser or request.user.role == 'admin' or request.user.role == 'hr'  %}
+            <li class="">
+                <a href="#" title="Contract Employees">
+                <span class="menu-item-parent">Biometric Management</span>
+                <b class="collapse-sign">
+                <em class="fa fa-plus-square-o"></em>
+                </b>
+                </a>
+                <ul style="display: none;">
+                    <li {% if request.path == "/list-bio/"  or "/list-bio/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'list_bio' %}" title="Mass Transfer"><span class="menu-item-parent">Contractor Employee Device management</span></a>
+                    </li>
+<!-- 
+                    <li {% if request.path == "/add-contractor/"  or "/add-contractor/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'add_contractor' %}" title="Mass Transfer"><span class="menu-item-parent">Mass Transfer</span></a>
+                    </li> -->
+                    <li {% if request.path == "/remove-contractor/"  or "/remove-contractor/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'remove_contractor' %}" title="Mass Delete"><span class="menu-item-parent">Mass Delete</span></a>
+                    </li>
+
+                    <li {% if request.path == "/enable-master-workday/"  or "/enable-master-workday/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'enable_master_workday' %}" title="Enable contract employee"><span class="menu-item-parent">Enable contract employee master</span></a>
+                    </li>
+                    <li {% if request.path == "/enable-workday/"  or "/enable-workday/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'enable_workday' %}" title="Enable contract employee"><span class="menu-item-parent">Enable contract employee</span></a>
+                    </li>
+                    <li {% if request.path == "/create-user/"  or "/create-user/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'create_user' %}" title="Create contract employee into device"><span class="menu-item-parent">Create contract employee into device</span></a>
+                    </li>
+                    
+
+
+                </ul>
+            </li>
+            {% endif %}
+            {% if request.user.is_superuser or request.user.role == 'admin' or request.user.role == 'supervisor' %}
+            <li class="">
+                <a href="#" title="Master">
+                <span class="menu-item-parent">Master</span>
+                <b class="collapse-sign">
+                <em class="fa fa-plus-square-o"></em>
+                </b>
+                </a>
+                <ul style="display: none;">
+                    <li {% if request.path == "/contractor-list/"  or "/contractor-list/" in request.path or "/contractor-employee-detail/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'contractor_list' %}" title="Contractors employee list"><span class="menu-item-parent">Contractor employees list</span></a>
+                    </li>
+                    {% if request.user.is_superuser or request.user.role == 'admin' %}
+                    <li {% if request.path == "/project-list/"  or "/project-list/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'project_list' %}" title="Projects"><span class="menu-item-parent">Projects</span></a>
+                    </li>
+                    <li {% if request.path == "/department-list/"  or "/department-list/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'department_list' %}"  title="Departments"><span class="menu-item-parent">Departments</span></a>
+                    </li>
+                    <li {% if request.path == "/location-list/"  or "/location-list/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'location_list' %}"title="Locations"><span class="menu-item-parent">Locations</span></a>
+                    </li>
+                    <li {% if request.path == "/list-users/"  or "/list-users/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'list_users' %}" title="Users"><span class="menu-item-parent">Users</span></a>
+                    </li>
+                    <li {% if request.path == "/device-listing/"  or "/device-listing/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'device_listing' %}" title="Device list"><span class="menu-item-parent">Device listing</span></a>
+                    </li>
+                    <!--<li {% if request.path == "/device-status/"  or "/device-status/" in request.path %} class="active" {% endif %}>-->
+                    <!--<a href="{% url 'device_status' %}" title="Device Status"><span class="menu-item-parent">Device Status</span></a>-->
+                    <!--</li>-->
+                    <li {% if request.path == "/configuration/"  or "/configuration/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'configuration' %}" title="Configuration"><span class="menu-item-parent">Configuration</span></a>
+                    </li>
+                    <li {% if request.path == "/block-out-time/"  or "/block-out-time/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'block_out_time' %}" title="Configuration"><span class="menu-item-parent">Block out time</span></a>
+                    </li>
+                    
+                    <li {% if request.path == "/place-of-work/"  or "/place-of-work/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'place_of_work' %}"title="Place Of Work"><span class="menu-item-parent">Place Of Work</span></a>
+                    </li>
+                    <li {% if request.path == "/company-list/"  or "/company-list/" in request.path or "/company-detail/" in request.path or "/company/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'company_list' %}"title="Company"><span class="menu-item-parent">Contract company list</span></a>
+                    </li>
+                    {% endif %}
+                    <li {% if request.path == "/contractor-import/"  or "/contractor-import/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'contractor_import' %}" title="Import contractors"><span class="menu-item-parent">Import Contractor Employees</span></a>
+                    </li>
+                    {% if request.user.is_superuser or request.user.role == 'admin' %}
+                    <li {% if request.path == "/shift-timing-view/"  or "/shift-timing-view/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'shift_timing_view' %}" title="Shift timing"><span class="menu-item-parent">Shift timing</span></a>
+                    </li>
+                    <li {% if request.path == "/skill/"  or "/skill/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'skill' %}" title="Shift timing"><span class="menu-item-parent">Skill</span></a>
+                    </li>
+                    {% if request.user.email == 'admin@gmail.com' %}
+                    <li {% if request.path == "/test-page/"  or "/test-page/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'test_page' %}" title="Test"><span class="menu-item-parent">Test</span></a>
+                    </li>
+                    <li {% if request.path == "/report-enable/"  or "/report-enable/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'report_enable' %}" title="Report Enable"><span class="menu-item-parent">Report Enable</span></a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
+                </ul>
+            </li>
+            {% endif %}
+            {% endif %}
+            {% if request.user.is_superuser or request.user.role == 'supervisor' or request.user.role == 'admin'  or request.user.role == 'hr'%}
+
+          <li class="">
+              <a href="#" title="Transfer ">
+              <span class="menu-item-parent">Transfer</span>
+              <b class="collapse-sign">
+              <em class="fa fa-plus-square-o"></em>
+              </b>
+              </a>
+              <ul style="display: none;">
+                <!-- <li {% if request.path == "/pass-list/"  or "/pass-list/" in request.path %} class="active" {% endif %}>
+                 <a href="{% url 'pass_list' %}" title="Transfer wizard"><span class="menu-item-parent">Transfer list</span></a>
+                 </li> -->
+                  <li {% if request.path == "/transfer-wizard/"  or "/transfer-wizard/" in request.path %} class="active" {% endif %}>
+                 <a href="{% url 'transfer_wizard' %}" title="Transfer wizard"><span class="menu-item-parent">Transfer wizard</span></a>
+                 </li>
+                 <li {% if request.path == "/pass-import/"  or "/pass-import/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'pass_import' %}" title="Transfer Import"><span class="menu-item-parent">Transfer Import</span></a>
+                    </li>
+              </ul>
+           </li>
+           {% endif %}
+
+           
+            {% if request.user.is_superuser or request.user.role == 'admin' or request.user.role == "hr" %}
+             <li class="">
+              <a href="#" title="Reports">
+              <span class="menu-item-parent">Reports</span>
+              <b class="collapse-sign">
+              <em class="fa fa-plus-square-o"></em>
+              </b>
+              </a>
+              <ul style="display: none;">
+               {% if custom_report_menu.shift_report %} 
+                 <li {% if request.path == "/shift-report/"  or "/shift-report/" in request.path %} class="active" {% endif %}>
+                 <a href="{% url 'shift_report' %}" title="Shift report"><span class="menu-item-parent">Shift report</span></a>
+                 </li>
+                 {% endif %}
+                 {% if custom_report_menu.project_wise_shift_report %} 
+                 <li  {% if request.path == "/shift-report-by-location-project/"  or "/shift-report-by-location-project/" in request.path %} class="active" {% endif %}>
+                 <a href="{% url 'shift_report_by_location_project' %}" title="Project wise shift report"><span class="menu-item-parent">Project wise shift report</span></a>
+                 </li>
+                 {% endif %}
+                 {% if custom_report_menu.location_wise_shift_report %} 
+                 <li {% if request.path == "/shift-report-3/"  or "/shift-report-3/" in request.path %} class="active" {% endif %}>
+                  <a href="{% url 'shift_report_3' %}" title="Location wise shift report"><span class="menu-item-parent">Location wise shift report</span></a>
+                  </li>
+                  {% endif %}
+                  {% if custom_report_menu.day_report %} 
+                  <li  {% if request.path == "/shift-report-4/"  or "/shift-report-4/" in request.path %} class="active" {% endif %}>
+                    <a href="{% url 'shift_report_4' %}" title="Day report"><span class="menu-item-parent">Day report</span></a>
+                  </li>
+                  {% endif %}
+                  {% if custom_report_menu.location_wise_day_report and request.user.is_superuser or request.user.role == 'admin' %} 
+                  <li {% if request.path == "/shift-report-5/"  or "/shift-report-5/" in request.path %} class="active" {% endif %} ><a href="{% url 'shift_report_5' %}" title="Location wise day report"><span class="menu-item-parent">Location wise day report</span></a>
+                 </li>
+                 {% endif %}
+                 {% if custom_report_menu.consolidated_weekly_report %} 
+                 <li {% if request.path == "/shift-report-6/"  or "/shift-report-6/" in request.path %} class="active" {% endif %} ><a href="{% url 'shift_report_6' %}" title="Consolidated weekly report"><span class="menu-item-parent">Consolidated weekly report</span></a>
+                 </li>
+                 {% endif %}
+                 {% if custom_report_menu.consolidated_monthly_report %} 
+                 <li {% if request.path == "/shift-report-7/"  or "/shift-report-7/" in request.path %} class="active" {% endif %} ><a href="{% url 'shift_report_7' %}" title="Consolidated monthly report"><span class="menu-item-parent">Consolidated monthly report</span></a>
+                 </li>
+                 {% endif %}
+                 {% if custom_report_menu.skill_report %} 
+                 <li {% if request.path == "/skill-report/"  or "/skill-report/" in request.path or "/skill-report/" in request.path %} class="active" {% endif %}>
+                 <a href="{% url 'skill_based_report' %}" title="Contractors list"><span class="menu-item-parent">Skill Report</span></a>
+                </li>
+                {% endif %}
+                {% endif %}
+                {% if custom_report_menu.exception_attendance_list %} 
+                <li {% if request.path == "/attendance-exception-listing/"  or "/attendance-exception-listing/" in request.path or "/investigation/" in request.path %} class="active" {% endif %}>
+                 <a href="{% url 'attendance_exception_listing' %}" title="Contractors list"><span class="menu-item-parent">Exception attendance list</span></a>
+                </li>
+                
+              </ul>
+           </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+</aside>
+<!-- Modal -->
+<div class="modal fade" id="error-model" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+                <p id="error-message-del">Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+[django]
+secret_key = 
+MYSQL_DB_NAME = 
+MYSQL_DB_USER = 
+MYSQL_DB_PASSWORD = 
+MYSQL_DB_HOST = 
+LOG_DIR = /opt/log/masterapi
+LOG_LEVEL = ERROR

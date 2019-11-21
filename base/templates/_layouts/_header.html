@@ -1,0 +1,72 @@
+{% load i18n %}
+{% load compress %}
+{% load staticfiles %}
+<!-- #HEADER -->
+<header id="header">
+    <div id="logo-group">
+        <!-- PLACE YOUR LOGO HERE -->
+        <span id="logo"><a href="/"> <img src="/static/image/logo.gif" class="logoImage" alt="logo-dummy"> </a></span>            <!-- end collapse menu -->
+    </div>
+    <!-- pulled right: nav area -->
+    <div class="pull-right">
+        <!-- logout button -->
+        <div id="logout" class="btn-header transparent pull-right">
+            <span> 
+            <a href="{% url 'account_logout' %}" id="sign_out" title="Sign Out">
+            <i class="fa fa-sign-out">  
+            </i>
+            </a> 
+            </span>
+        </div>
+        <!-- end search mobile button -->
+        <!-- input: search field -->
+        <!--  <div class="header-search pull-right">
+            <i class="glyphicon glyphicon-cog "></i>
+            </div> -->
+        <!-- 
+            <form class="header-search pull-right">
+               <button type="button" data-toggle="modal" data-target="#myModal">
+               <i class="fa fa-search"></i>
+               </button>
+            </form> -->
+        <!-- end input: search field -->
+        <!-- end lang dropdown -->
+    </div>
+    <!-- end pulled right: nav area -->
+</header>
+<header id="header-print">
+    <div id="logo-group"></div>
+    <span id="logo-print"> <img src="/static/image/logo.png" class="logoImage" align="middle" alt="logo-dummy"> </span> 
+    </div>
+</header>
+<!-- END HEADER -->
+<!-- #NAVIGATION -->
+<aside id="left-panel">
+    <nav>
+        <ul style="">
+             <li  {% if request.path == "/import/"  or "/import/" in request.path %} class="active" {% endif %}><a href="{% url 'import' %}" title="Student Import"><span class="menu-item-parent">Student Import</span></a></li>
+             <li  {% if request.path == "/mess-import/"  or "/mess-import/" in request.path %} class="active" {% endif %}><a href="{% url 'mess_import' %}" title="Mess import"><span class="menu-item-parent">Mess import</span></a></li>
+              <li  {% if request.path == "/mess-student-import/"  or "/mess-student-import/" in request.path %} class="active" {% endif %}><a href="{% url 'mess_student_import' %}" title="Mess Student Import"><span class="menu-item-parent">Mess Student Import</span></a></li>
+            <li  {% if request.path == "/rc-import/"  or "/rc-import/" in request.path %} class="active" {% endif %}><a href="{% url 'rc_import' %}" title="RC Import"><span class="menu-item-parent">RC Import</span></a></li>
+               
+        </ul>
+    </nav>
+</aside>
+<!-- Modal -->
+<div class="modal fade" id="error-model" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+                <p id="error-message-del">Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

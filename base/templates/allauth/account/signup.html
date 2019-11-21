@@ -1,0 +1,63 @@
+{% extends "account/base.html" %}
+{% load addClass %}
+{% load i18n %}
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block content %}
+
+<div class="row">
+   <div class="col-md-4 col-md-offset-4 auth-border">
+        <div class="form-bottom">
+                <div class="social-login" align="center">
+                    <div class="social-login-buttons">
+                        <a class="btn btn-primary" href="#">
+                            <i class="fa fa-facebook"></i> Facebook
+                        </a>
+                        <a class="btn btn-danger" href="#">
+                            <i class="fa fa-google-plus"></i> Google Plus
+                        </a>
+                    </div>
+                </div>
+                <div class="hr-line">
+                  <span>
+                    OR
+                  </span>
+                </div>
+                <form role="form" action="" method="post" action="{% url 'account_signup' %}" class="registration-form">
+                	{% csrf_token %}
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Username</label>
+                        {{ form.username | addcss:"form-control" }}
+                        {% if form.username.errors %}
+                            <div class="validation">{{ form.username.errors|striptags }}</div>
+                        {% endif %}
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Email</label>
+                        {{ form.email | addcss:"form-control" }}
+                        {% if form.email.errors %}
+                            <div class="validation">{{ form.email.errors|striptags }}</div>
+                        {% endif %}
+                      </div>
+                        <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        {{ form.password1 | addcss:"form-control" }}
+                        {% if form.password1.errors %}
+                            <div class="validation">{{ form.password1.errors|striptags }}</div>
+                        {% endif %}
+                      </div>
+                       <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        {{ form.password2 | addcss:"form-control" }}
+                        {% if form.password2.errors %}
+                            <div class="validation">{{ form.password2.errors|striptags }}</div>
+                        {% endif %}
+                      </div>
+                      
+                   <!--  {{ form.as_p }} -->
+                    <button type="submit" class="btn btn-primary pull-right"> Sign up</button>
+                    <p>Already have an account? <a href="{{ login_url }}">Log in</a></p>
+                </form>
+            </div>
+    </div>
+</div>
+{% endblock %}
